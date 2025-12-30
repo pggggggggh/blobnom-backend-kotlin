@@ -13,15 +13,9 @@ services:
     build: ./blobnom-kotlin
     container_name: blobnom-api
     ports:
-      - "8080:8080"
-    environment:
-      - DB_URL
-      - DB_USERNAME
-      - DB_PASSWORD
-      - JWT_SECRET_KEY
-      - REDIS_HOST
-      - REDIS_PORT
-      - REDIS_DBNO
+      - "80:8080"
+    env_file:
+      - .env
     depends_on:
       - redis
     networks:
@@ -32,10 +26,8 @@ services:
     container_name: blobnom-socket
     ports:
       - "9092:9092"
-    environment:
-      - REDIS_HOST
-      - REDIS_PORT
-      - REDIS_DBNO
+    env_file:
+      - .env
     depends_on:
       - redis
     networks:
