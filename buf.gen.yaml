@@ -1,0 +1,13 @@
+version: v2
+managed:
+  enabled: true
+clean: true
+plugins:
+  - remote: buf.build/protocolbuffers/kotlin
+    out: blobnom-kotlin/build/generated/buf
+  - remote: buf.build/protocolbuffers/java
+    out: blobnom-kotlin/build/generated/buf
+  - remote: buf.build/protocolbuffers/python
+    out: blobnom-socket/src/pb
+  - remote: buf.build/protocolbuffers/pyi
+    out: blobnom-socket/src/pb

@@ -1,0 +1,8 @@
+python-socketio
+uvicorn[standard]
+redis
+pydantic
+fastapi
+pytz
+protobuf
+grpcio-tools

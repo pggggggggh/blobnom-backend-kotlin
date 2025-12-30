@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: blobnom-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - blobnom-net
+
+  api:
+    build: ./blobnom-kotlin
+    container_name: blobnom-api
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL
+      - DB_USERNAME
+      - DB_PASSWORD
+      - JWT_SECRET_KEY
+      - REDIS_HOST
+      - REDIS_PORT
+      - REDIS_DBNO
+    depends_on:
+      - redis
+    networks:
+      - blobnom-net
+
+  socket:
+    build: ./blobnom-socket
+    container_name: blobnom-socket
+    ports:
+      - "9092:9092"
+    environment:
+      - REDIS_HOST
+      - REDIS_PORT
+      - REDIS_DBNO
+    depends_on:
+      - redis
+    networks:
+      - blobnom-net
+
+networks:
+  blobnom-net:
+    driver: bridge

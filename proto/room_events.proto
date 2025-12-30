@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+message RoomEvent {
+  int64 room_id = 1;
+  oneof event {
+    ProblemSolved problem_solved = 2;
+    RoomStarted room_started = 3;
+    RoomReadyFailed room_ready_failed = 4;
+  }
+}
+
+message ProblemSolved {
+  string problem_id = 1;
+  string username = 2;
+}
+
+message RoomStarted {
+}
+
+message RoomReadyFailed {
+  string message = 1;
+}
