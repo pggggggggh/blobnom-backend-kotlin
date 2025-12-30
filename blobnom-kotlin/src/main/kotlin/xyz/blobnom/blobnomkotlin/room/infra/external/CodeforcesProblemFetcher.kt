@@ -81,8 +81,13 @@ class CodeforcesProblemFetcher(
             val rating = problem.rating ?: return@filter false
             val contestId = problem.contestId ?: return@filter false
 
-            if (diffS != null && diffE != null && (rating < diffS || rating > diffE)) return@filter false
-            if (cidS != null && cidE != null && (contestId < cidS || contestId > cidE)) return@filter false
+            val ds = diffS
+            val de = diffE
+            val cs = cidS
+            val ce = cidE
+
+            if (ds != null && de != null && (rating < ds || rating > de)) return@filter false
+            if (cs != null && ce != null && (contestId < cs || contestId > ce)) return@filter false
             if (cidOnlyOdd && contestId % 2 == 0) return@filter false
             if (pids.isNotEmpty() && !pids.contains(problem.index.take(1))) return@filter false
 
