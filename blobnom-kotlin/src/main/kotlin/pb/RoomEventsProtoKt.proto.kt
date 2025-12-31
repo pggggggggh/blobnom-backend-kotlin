@@ -2,9 +2,6 @@
 // NO CHECKED-IN PROTOBUF GENCODE
 // source: room_events.proto
 
-@file:Generated
+@file:com.google.protobuf.Generated
 // Generated files should ignore deprecation warnings
 @file:Suppress("DEPRECATION")
-
-import com.google.protobuf.Generated
-
