@@ -1,9 +1,0 @@
-api.blobnom.xyz {
-    @socket path /socket*
-    handle @socket {
-        reverse_proxy blobnom-socket:9092
-    }
-    handle {
-        reverse_proxy blobnom-api:8080
-    }
-}

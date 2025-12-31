@@ -64,3 +64,14 @@ allOpen {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+sourceSets {
+    main {
+        kotlin {
+            srcDirs += 'build/generated/pb'
+        }
+        java {
+            srcDirs += 'build/generated/pb'
+        }
+    }
+}
