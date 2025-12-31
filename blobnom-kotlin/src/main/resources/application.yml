@@ -4,6 +4,7 @@ spring:
       host: ${REDIS_HOST}
       port: 6379
       database: ${REDIS_DBNO}
+      password: ${REDIS_PWD:#{null}}
   application:
     name: blobnom-kotlin
   datasource:
