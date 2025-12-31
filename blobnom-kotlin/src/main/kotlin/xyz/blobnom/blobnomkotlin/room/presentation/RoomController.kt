@@ -1,13 +1,14 @@
 package xyz.blobnom.blobnomkotlin.room.presentation
 
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import xyz.blobnom.blobnomkotlin.auth.infra.CustomUserDetails
 import xyz.blobnom.blobnomkotlin.room.app.RoomCreateService
 import xyz.blobnom.blobnomkotlin.room.app.RoomDetailsService
@@ -24,7 +25,7 @@ import xyz.blobnom.blobnomkotlin.room.dto.RoomJoinRequest
 import xyz.blobnom.blobnomkotlin.room.dto.RoomListRequest
 import xyz.blobnom.blobnomkotlin.room.dto.RoomListResponse
 
-@Controller
+@RestController
 @RequestMapping("/rooms")
 class RoomController(
     val roomListService: RoomListService,
@@ -36,7 +37,7 @@ class RoomController(
 ) {
     @GetMapping("/list")
     fun getRoomList(
-        roomListRequest: RoomListRequest,
+        @ParameterObject roomListRequest: RoomListRequest,
         @AuthenticationPrincipal principal: CustomUserDetails?
     ): ResponseEntity<RoomListResponse> {
         val response = roomListService.getRoomList(roomListRequest, principal?.memberId)
@@ -96,7 +97,7 @@ class RoomController(
         @AuthenticationPrincipal user: CustomUserDetails?
     ): ResponseEntity<Unit> {
         roomDeleteService.deleteRoom(id, user?.memberId, request.password)
-        
+
         return ResponseEntity.ok().build()
     }
 }
