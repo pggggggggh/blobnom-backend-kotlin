@@ -32,7 +32,6 @@ spring:
             driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
 
 
-
 jwt:
   secret: ${JWT_SECRET_KEY}
   expiration-time: 2592000000
