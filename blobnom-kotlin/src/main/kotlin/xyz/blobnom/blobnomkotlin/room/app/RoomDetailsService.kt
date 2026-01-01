@@ -1,10 +1,8 @@
 package xyz.blobnom.blobnomkotlin.room.app
 
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 import xyz.blobnom.blobnomkotlin.member.app.toMemberSummary
-import xyz.blobnom.blobnomkotlin.room.domain.Room
 import xyz.blobnom.blobnomkotlin.room.domain.RoomMission
 import xyz.blobnom.blobnomkotlin.room.domain.repository.RoomRepository
 import xyz.blobnom.blobnomkotlin.room.dto.RoomDetails
@@ -16,9 +14,9 @@ import xyz.blobnom.blobnomkotlin.room.dto.TeamMemberInfo
 class RoomDetailsService(
     private val roomRepository: RoomRepository,
 ) {
-    // TODO: Resolve N+1
     fun getRoomDetails(roomId: Long, memberId: Long?): RoomDetails {
-        val room: Room = roomRepository.findByIdOrNull(roomId) ?: throw RuntimeException()
+        val room = roomRepository.findWithPlayers(roomId) ?: throw RuntimeException()
+        roomRepository.findWithMissions(roomId) ?: throw RuntimeException()
 
         val player = memberId?.let { room.players.find { it.platformUser.member.id == memberId } }
         val isUserInRoom = player != null
