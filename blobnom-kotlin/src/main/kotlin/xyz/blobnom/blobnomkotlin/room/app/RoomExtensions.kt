@@ -53,12 +53,12 @@ fun Room.toRoomSummary(owner: MemberSummary?) = RoomSummary(
     isContestRoom = isContestRoom,
 )
 
-fun RoomMission.toInfo() = RoomMissionInfo(
+fun RoomMission.toInfo(withDifficulty: Boolean = true) = RoomMissionInfo(
     id = id!!,
     problemId = problemId,
     platform = platform,
     indexInRoom = indexInRoom,
     solvedAt = solvedAt,
     solvedTeamIndex = solvedTeamIndex,
-    difficulty = difficulty
+    difficulty = if (withDifficulty) difficulty else null
 )

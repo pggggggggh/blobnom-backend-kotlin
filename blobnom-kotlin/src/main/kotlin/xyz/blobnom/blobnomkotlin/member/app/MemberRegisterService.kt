@@ -20,10 +20,6 @@ class MemberRegisterService(
     suspend fun register(registerRequest: RegisterRequest) {
         if (memberRepository.findByEmail(registerRequest.email) != null)
             throw CustomException(ErrorCode.ALREADY_TAKEN)
-        if (platformUserRepository.findByHandleAndPlatform(registerRequest.handle, registerRequest.platform) != null)
-            throw CustomException(ErrorCode.ALREADY_TAKEN)
-
-        authService.validatePlatformAccount(registerRequest.platform, registerRequest.handle)
 
         val hashedPassword = authService.hashPassword(registerRequest.password)
         val member = Member.create(
@@ -31,7 +27,19 @@ class MemberRegisterService(
             email = registerRequest.email.lowercase(),
             hashedPassword = hashedPassword,
         )
-        member.linkPlatform(registerRequest.platform, registerRequest.handle)
+
+        for (platformUserRequest in registerRequest.platformUserRequests) {
+            if (platformUserRepository.findByHandleAndPlatform(
+                    platformUserRequest.handle,
+                    platformUserRequest.platform
+                ) != null
+            )
+                throw CustomException(ErrorCode.ALREADY_TAKEN)
+
+            authService.validatePlatformAccount(platformUserRequest.platform, platformUserRequest.handle)
+            member.linkPlatform(platformUserRequest.platform, platformUserRequest.handle)
+        }
+
         memberRepository.save(member)
     }
 }

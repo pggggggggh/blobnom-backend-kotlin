@@ -131,6 +131,12 @@ class Room(
         }
     }
 
+    fun showDifficulty(now: ZonedDateTime): Boolean {
+        val offset = unfreezeOffsetMinutes ?: return true
+
+        return now.isAfter(endsAt.minusMinutes(offset.toLong()))
+    }
+
     fun getTeamStats(): List<TeamStat> = // 순위가 높은 것부터 반환
         players.groupBy { it.teamIndex }.map { (teamIndex, listPlayers) ->
             val anyUser = listPlayers.first() // 현재는 player에 팀의 정보가 저장되고 있음

@@ -3,11 +3,11 @@ package xyz.blobnom.blobnomkotlin.room.app
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 import xyz.blobnom.blobnomkotlin.member.app.toMemberSummary
-import xyz.blobnom.blobnomkotlin.room.domain.RoomMission
 import xyz.blobnom.blobnomkotlin.room.domain.repository.RoomRepository
 import xyz.blobnom.blobnomkotlin.room.dto.RoomDetails
 import xyz.blobnom.blobnomkotlin.room.dto.TeamInfo
 import xyz.blobnom.blobnomkotlin.room.dto.TeamMemberInfo
+import java.time.ZonedDateTime
 
 @Service
 @Transactional(readOnly = true)
@@ -37,7 +37,9 @@ class RoomDetailsService(
                 lastSolvedAt = it.lastSolvedAt,
             )
         }
-        val missionInfos = room.missions.sortedBy { it.indexInRoom }.map(RoomMission::toInfo)
+        val now = ZonedDateTime.now()
+        val showDifficulty = room.showDifficulty(now)
+        val missionInfos = room.missions.sortedBy { it.indexInRoom }.map { it.toInfo(showDifficulty) }
 
         return room.toRoomDetails(
             owner = room.owner?.toMemberSummary(),
