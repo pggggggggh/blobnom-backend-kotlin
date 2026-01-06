@@ -8,6 +8,7 @@ import xyz.blobnom.blobnomkotlin.common.exception.ErrorCode
 import xyz.blobnom.blobnomkotlin.member.domain.Member
 import xyz.blobnom.blobnomkotlin.member.domain.repository.MemberRepository
 import xyz.blobnom.blobnomkotlin.member.domain.repository.PlatformUserRepository
+import xyz.blobnom.blobnomkotlin.member.dto.PlatformAccountRequest
 import xyz.blobnom.blobnomkotlin.member.dto.RegisterRequest
 
 @Service
@@ -28,7 +29,7 @@ class MemberRegisterService(
             hashedPassword = hashedPassword,
         )
 
-        for (platformUserRequest in registerRequest.platformUserRequests) {
+        for (platformUserRequest in registerRequest.platformAccountRequests) {
             if (platformUserRepository.findByHandleAndPlatform(
                     platformUserRequest.handle,
                     platformUserRequest.platform
@@ -41,5 +42,18 @@ class MemberRegisterService(
         }
 
         memberRepository.save(member)
+    }
+
+    @Transactional
+    suspend fun validatePlatformAccount(request: PlatformAccountRequest): Boolean {
+        if (platformUserRepository.findByHandleAndPlatform(
+                request.handle,
+                request.platform
+            ) != null
+        )
+            throw CustomException(ErrorCode.ALREADY_TAKEN)
+
+        authService.validatePlatformAccount(request.platform, request.handle)
+        return true
     }
 }

@@ -37,6 +37,8 @@ class RoomJoinService(
 
         val platformUser = member.platformUsers.find { it.platform == room.platform }
             ?: throw CustomException(ErrorCode.UNLINKED_PLATFORM)
+        
+
         val solvedProblemIds = if (room.isStarted) {
             val targetProblemIds = room.missions
                 .filter { !it.isSolved }

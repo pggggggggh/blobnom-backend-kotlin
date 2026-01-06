@@ -16,5 +16,5 @@ class WebClientConfig {
     fun webClient(): WebClient =
         WebClient.builder()
             .clientConnector(ReactorClientHttpConnector(httpClient))
-            .codecs { it.defaultCodecs().maxInMemorySize(10 * 1024 * 1024) }.build()
+            .codecs { it.defaultCodecs().maxInMemorySize(50 * 1024 * 1024) }.build()
 }

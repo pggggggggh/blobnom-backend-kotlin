@@ -120,6 +120,7 @@ class RoomCreateService(
     fun handleRoomStart(roomId: Long) {
         val room = roomRepository.findByIdOrNull(roomId) ?: throw RuntimeException("Unknown room")
         room.startGame()
+        roomRepository.save(room)
         roomEventPublisherPort.publishRoomStarted(room.id!!)
     }
 

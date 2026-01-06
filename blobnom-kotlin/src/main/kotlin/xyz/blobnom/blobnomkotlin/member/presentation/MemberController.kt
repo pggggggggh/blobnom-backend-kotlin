@@ -12,6 +12,7 @@ import xyz.blobnom.blobnomkotlin.auth.infra.CustomUserDetails
 import xyz.blobnom.blobnomkotlin.member.app.MemberRegisterService
 import xyz.blobnom.blobnomkotlin.member.app.MemberService
 import xyz.blobnom.blobnomkotlin.member.dto.MemberSummary
+import xyz.blobnom.blobnomkotlin.member.dto.PlatformAccountRequest
 import xyz.blobnom.blobnomkotlin.member.dto.RegisterRequest
 
 @RestController
@@ -29,5 +30,11 @@ class MemberController(
     suspend fun register(@RequestBody request: RegisterRequest): ResponseEntity<Unit> {
         memberRegisterService.register(request)
         return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @PostMapping("/validate-platform-account")
+    suspend fun validatePlatformAccount(@RequestBody request: PlatformAccountRequest): ResponseEntity<Unit> {
+        memberRegisterService.validatePlatformAccount(request)
+        return ResponseEntity.status(HttpStatus.OK).build()
     }
 }

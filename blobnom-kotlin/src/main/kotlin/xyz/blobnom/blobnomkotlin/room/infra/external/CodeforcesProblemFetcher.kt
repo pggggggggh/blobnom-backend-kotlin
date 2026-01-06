@@ -8,6 +8,7 @@ import xyz.blobnom.blobnomkotlin.room.dto.external.CodeforcesContest
 import xyz.blobnom.blobnomkotlin.room.dto.external.CodeforcesProblemSetResponse
 import xyz.blobnom.blobnomkotlin.room.dto.external.CodeforcesResponse
 import xyz.blobnom.blobnomkotlin.room.dto.external.CodeforcesSubmission
+import java.util.Locale.getDefault
 
 @Component
 class CodeforcesProblemFetcher(
@@ -22,6 +23,7 @@ class CodeforcesProblemFetcher(
         var ctypes = listOf("div1", "div2", "global", "div3", "div4", "edu", "etc")
         var pids = setOf<String>()
         val forbiddenHandles = mutableListOf<String>()
+
 
         try {
             query.split(" ").forEach { q ->
@@ -68,7 +70,7 @@ class CodeforcesProblemFetcher(
                 .awaitBody<CodeforcesProblemSetResponse>()
 
         val contestNames = contestList.result.associate { it.id to it.name.lowercase() }
-        val allProblems = problemSet.result.problems.shuffled()
+        val allProblems = problemSet.result.problems
 
         val forbiddenProblemIds = forbiddenHandles.flatMap { handle ->
             webClient.get().uri("https://codeforces.com/api/user.status?handle=$handle")
@@ -86,12 +88,13 @@ class CodeforcesProblemFetcher(
             val cs = cidS
             val ce = cidE
 
+
             if (ds != null && de != null && (rating < ds || rating > de)) return@filter false
             if (cs != null && ce != null && (contestId < cs || contestId > ce)) return@filter false
             if (cidOnlyOdd && contestId % 2 == 0) return@filter false
             if (pids.isNotEmpty() && !pids.contains(problem.index.take(1))) return@filter false
 
-            val name = contestNames[contestId] ?: ""
+            val name = contestNames[contestId]?.lowercase(getDefault()) ?: ""
             val typeMatched = ctypes.any { type ->
                 when (type) {
                     "div1" -> "div. 1" in name && "div. 1 + div. 2" !in name
@@ -99,7 +102,7 @@ class CodeforcesProblemFetcher(
                     "div3" -> "div. 3" in name
                     "div4" -> "div. 4" in name
                     "edu" -> "educational" in name
-                    "global" -> "global" in name || "div. 1 + div. 2" in name
+                    "global" -> "global" in name || "div. 1 + div. 2" in name || "good bye" in name || "hello" in name
                     "etc" -> listOf(
                         "div. 1",
                         "div. 2",
