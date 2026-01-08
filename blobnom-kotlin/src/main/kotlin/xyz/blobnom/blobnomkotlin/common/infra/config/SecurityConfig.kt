@@ -22,9 +22,17 @@ class SecurityConfig {
     fun securityFilterChain(http: HttpSecurity, jwtTokenProvider: JwtTokenProvider): SecurityFilterChain {
         http {
             cors { configurationSource = corsConfigurationSource() }
+
             authorizeHttpRequests {
+                authorize("/rooms/create", authenticated)
+                authorize("/rooms/solved", authenticated)
+                authorize("/rooms/join/*", authenticated)
+                authorize("/rooms/leave/*", authenticated)
+                authorize("/rooms/delete/*", authenticated)
+
                 authorize(anyRequest, permitAll)
             }
+
             csrf { disable() }
             formLogin {}
             httpBasic {}
