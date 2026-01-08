@@ -19,7 +19,7 @@ class PlatformToken(
     val token: String,
 
     @Column
-    val isUsed: Boolean = false,
+    var isUsed: Boolean = false,
 
     @Column
     val expiresAt: ZonedDateTime

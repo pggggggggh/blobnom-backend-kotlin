@@ -56,11 +56,16 @@ class Member(
     }
 
     fun linkPlatform(platform: Platform, handle: String) {
-        val newLink = PlatformUser(
-            member = this,
-            platform = platform,
-            handle = handle
-        )
-        this.platformUsers.add(newLink)
+        val existingAccount = platformUsers.find { it.platform == platform }
+        if (existingAccount != null) {
+            existingAccount.rename(handle)
+        } else {
+            val newLink = PlatformUser(
+                member = this,
+                platform = platform,
+                handle = handle
+            )
+            this.platformUsers.add(newLink)
+        }
     }
 }

@@ -1,6 +1,5 @@
 package xyz.blobnom.blobnomkotlin.member.dto
 
-import xyz.blobnom.blobnomkotlin.common.Platform
 import xyz.blobnom.blobnomkotlin.common.Role
 
 data class MemberSummary(
@@ -8,6 +7,6 @@ data class MemberSummary(
     val handle: String,
     val role: Role,
     val rating: Int?,
-    val accounts: Map<Platform, String>
+    val accounts: List<PlatformAccountInfo>
 )
 

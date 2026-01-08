@@ -17,7 +17,7 @@ class ClaimMissionService(
 ) {
     @Transactional
     suspend fun claimMission(roomId: Long, missionId: Long, memberId: Long): Boolean {
-        // TODO: Resolve N+1, suspend transaction problem
+        // TODO: Resolve N+1
         val room = roomRepository.findByIdOrNull(roomId)
             ?: throw RuntimeException("Room not found")
         // TODO: modify using isEnded

@@ -52,6 +52,15 @@ class AuthService(
     @Transactional
     suspend fun validatePlatformAccount(platform: Platform, handle: String) {
         val bios = platformBioFetcherPort.fetchBios(platform, handle)
-        if (!bios.any { platformTokenRepository.findByToken(it) != null }) throw CustomException(ErrorCode.FAILED_TOKEN_VERIFICATION)
+
+        for (bio in bios) {
+            val token = platformTokenRepository.findByToken(bio)
+            if (token != null && !token.isUsed && token.expiresAt.isAfter(ZonedDateTime.now())) {
+                token.isUsed = true
+                platformTokenRepository.save(token)
+                return
+            }
+        }
+        throw CustomException(ErrorCode.FAILED_TOKEN_VERIFICATION)
     }
 }

@@ -23,9 +23,13 @@ enum class ErrorCode(
     ),
     ROOM_ENDED(HttpStatus.BAD_REQUEST, "ROOM_ENDED", "종료된 방입니다."),
     JOIN_DEADLINE_EXCEEDED(HttpStatus.BAD_REQUEST, "JOIN_DEADLINE_EXCEEDED", "시작 준비 중인 방입니다. 시작 이후 다시 시도해주세요."),
-    FAILED_TOKEN_VERIFICATION(HttpStatus.BAD_REQUEST, "FAILED_TOKEN_VERIFICATION", "토큰 인증에 실패했습니다."),
+    FAILED_TOKEN_VERIFICATION(
+        HttpStatus.BAD_REQUEST,
+        "FAILED_TOKEN_VERIFICATION",
+        "인증에 실패했습니다. 토큰이 만료되었을 수 있으니 재발급 후 시도해주세요."
+    ),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "INVALID_PASSWORD", "비밀번호가 일치하지 않습니다."),
-    UNLINKED_PLATFORM(HttpStatus.BAD_REQUEST, "UNLINKED_PLATFORM", "계정이 해당 플랫폼(BOJ, 코드포스)과의 연동되지 않아 진행할 수 없습니다."),
+    UNLINKED_PLATFORM(HttpStatus.BAD_REQUEST, "UNLINKED_PLATFORM", "계정이 해당 플랫폼(BOJ, 코드포스)과 연동되지 않아 진행할 수 없습니다."),
 
     // 404
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_NOT_FOUND", "존재하지 않는 회원입니다."),
@@ -36,6 +40,7 @@ enum class ErrorCode(
     ALREADY_PARTICIPATED(HttpStatus.CONFLICT, "ALREADY_PARTICIPATED", "이미 참가한 방입니다."),
     ALREADY_SOLVED(HttpStatus.CONFLICT, "ALREADY_SOLVED", "이미 해결된 문제입니다."),
     ALREADY_TAKEN(HttpStatus.CONFLICT, "ALREADY_TAKEN", "이미 사용 중인 핸들/이메일입니다."),
+    DUPLICATED_PLATFORM_LINK(HttpStatus.CONFLICT, "DUPLICATED_PLATFORM_LINK", "한 플랫폼 당 하나의 계정만 연동이 가능합니다."),
 
     // 503
     EXTERNAL_API_TIMEOUT(

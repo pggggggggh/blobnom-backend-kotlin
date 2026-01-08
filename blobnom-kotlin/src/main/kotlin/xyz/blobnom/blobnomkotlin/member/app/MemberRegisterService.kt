@@ -21,6 +21,9 @@ class MemberRegisterService(
     suspend fun register(registerRequest: RegisterRequest) {
         if (memberRepository.findByEmail(registerRequest.email) != null)
             throw CustomException(ErrorCode.ALREADY_TAKEN)
+        if (memberRepository.findByEmail(registerRequest.handle) != null)
+            throw CustomException(ErrorCode.ALREADY_TAKEN)
+
 
         val hashedPassword = authService.hashPassword(registerRequest.password)
         val member = Member.create(
@@ -28,6 +31,10 @@ class MemberRegisterService(
             email = registerRequest.email.lowercase(),
             hashedPassword = hashedPassword,
         )
+
+        // check if there is duplicated platform
+        val distinctCount = registerRequest.platformAccountRequests.distinctBy { it.platform }.size
+        if (distinctCount != registerRequest.platformAccountRequests.size) throw CustomException(ErrorCode.DUPLICATED_PLATFORM_LINK)
 
         for (platformUserRequest in registerRequest.platformAccountRequests) {
             if (platformUserRepository.findByHandleAndPlatform(
@@ -37,7 +44,6 @@ class MemberRegisterService(
             )
                 throw CustomException(ErrorCode.ALREADY_TAKEN)
 
-            authService.validatePlatformAccount(platformUserRequest.platform, platformUserRequest.handle)
             member.linkPlatform(platformUserRequest.platform, platformUserRequest.handle)
         }
 

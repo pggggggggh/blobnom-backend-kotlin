@@ -15,6 +15,7 @@ import org.hibernate.type.SqlTypes
 import xyz.blobnom.blobnomkotlin.common.BaseTimeEntity
 import xyz.blobnom.blobnomkotlin.common.Platform
 
+// TODO: Rename to PlatformAccount
 @Entity
 @Table(
     name = "users",
@@ -35,7 +36,7 @@ class PlatformUser(
     val platform: Platform,
 
     @Column(name = "name")
-    val handle: String,
+    var handle: String,
 
 
     ) : BaseTimeEntity() {
@@ -45,5 +46,9 @@ class PlatformUser(
             platform = platform,
             handle = handle
         )
+    }
+
+    fun rename(newHandle: String) {
+        handle = newHandle
     }
 }
