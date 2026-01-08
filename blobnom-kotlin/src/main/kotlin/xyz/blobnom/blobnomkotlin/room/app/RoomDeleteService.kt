@@ -28,7 +28,7 @@ class RoomDeleteService(
                 memberRepository.findByIdOrNull(memberId!!) ?: throw CustomException(ErrorCode.MEMBER_NOT_FOUND)
             if (member != room.owner) throw RuntimeException("방장만 삭제할 수 있습니다.")
         }
-        if (room.numSolvedMissions >= 2) throw RuntimeException("두 문제 이상 풀렸으므로 삭제할 수 없습니다.")
+        if (room.numSolvedMissions >= 2) throw CustomException(ErrorCode.CANNOT_DELETE)
 
         room.isDeleted = true
         roomRepository.save(room)

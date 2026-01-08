@@ -30,6 +30,7 @@ enum class ErrorCode(
     ),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "INVALID_PASSWORD", "비밀번호가 일치하지 않습니다."),
     UNLINKED_PLATFORM(HttpStatus.BAD_REQUEST, "UNLINKED_PLATFORM", "계정이 해당 플랫폼(BOJ, 코드포스)과 연동되지 않아 진행할 수 없습니다."),
+    CANNOT_DELETE(HttpStatus.BAD_REQUEST, "CANNOT_DELETE", "두 문제 이상 풀렸으므로 삭제할 수 없습니다."),
 
     // 404
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_NOT_FOUND", "존재하지 않는 회원입니다."),
