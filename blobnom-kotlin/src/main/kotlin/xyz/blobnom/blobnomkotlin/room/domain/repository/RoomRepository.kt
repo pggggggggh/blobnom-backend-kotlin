@@ -16,6 +16,7 @@ interface RoomRepository : JpaRepository<Room, Long> {
         LEFT JOIN FETCH r.owner
         WHERE (r.name LIKE %:search%)
         AND (:activeOnly = false OR (r.isStarted = true and r.entryPwd IS NULL ))
+        AND (r.modeType = "LAND_GRAB_SOLO" OR r.modeType = "LAND_GRAB_TEAM")
         ORDER BY r.lastSolvedAt DESC
     """
     )
@@ -32,7 +33,7 @@ interface RoomRepository : JpaRepository<Room, Long> {
         left join fetch r.players p
         left join fetch p.platformUser pu
         left join fetch pu.member m
-        where r.id = :roomId
+        where r.id = :roomId 
     """
     )
     fun findWithPlayers(@Param("roomId") roomId: Long): Room?

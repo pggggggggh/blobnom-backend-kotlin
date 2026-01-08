@@ -206,6 +206,7 @@ class Room(
 
     fun solveMission(mission: RoomMission, solver: RoomPlayer, solvedAt: ZonedDateTime) {
         if (mission.isSolved || solver.unsolvableMissionIds.contains(mission.id)) throw CustomException(ErrorCode.UNSOLVABLE_PROBLEM)
+        numSolvedMissions++
         mission.markSolved(solver, solvedAt)
     }
 
