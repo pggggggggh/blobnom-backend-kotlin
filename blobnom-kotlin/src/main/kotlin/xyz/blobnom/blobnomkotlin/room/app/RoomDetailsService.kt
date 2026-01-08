@@ -39,7 +39,9 @@ class RoomDetailsService(
         }
         val now = ZonedDateTime.now()
         val showDifficulty = room.showDifficulty(now)
-        val missionInfos = room.missions.sortedBy { it.indexInRoom }.map { it.toInfo(showDifficulty) }
+        val missionInfos = room.missions.sortedBy { it.indexInRoom }.map {
+            it.toInfo(showDifficulty || it.solvedAt != null)
+        }
 
         return room.toRoomDetails(
             owner = room.owner?.toMemberSummary(),
