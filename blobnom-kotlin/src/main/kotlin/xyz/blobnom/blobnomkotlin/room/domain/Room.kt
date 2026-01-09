@@ -88,8 +88,8 @@ class Room(
     @Column(name = "platform", nullable = false)
     var platform: Platform,
 
-    @Column(name = "winning_team_index")
-    var winningTeamIndex: Int = 0,
+//    @Column(name = "winning_team_index")
+//    var winningTeamIndex: Int = 0,
 
     @Column(nullable = false)
     var winner: String = "",
@@ -208,6 +208,7 @@ class Room(
         if (mission.isSolved || solver.unsolvableMissionIds.contains(mission.id)) throw CustomException(ErrorCode.UNSOLVABLE_PROBLEM)
         numSolvedMissions++
         mission.markSolved(solver, solvedAt)
+        this.lastSolvedAt = solvedAt
     }
 
     fun postpone(duration: Duration) {
