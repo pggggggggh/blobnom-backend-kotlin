@@ -16,6 +16,7 @@ import xyz.blobnom.blobnomkotlin.room.app.RoomListService
 import xyz.blobnom.blobnomkotlin.room.app.ClaimMissionService
 import xyz.blobnom.blobnomkotlin.room.app.RoomDeleteService
 import xyz.blobnom.blobnomkotlin.room.app.RoomJoinService
+import xyz.blobnom.blobnomkotlin.room.app.RoomLeaveService
 import xyz.blobnom.blobnomkotlin.room.dto.ClaimMissionRequest
 import xyz.blobnom.blobnomkotlin.room.dto.RoomCreateRequest
 import xyz.blobnom.blobnomkotlin.room.dto.RoomCreateResponse
@@ -33,7 +34,8 @@ class RoomController(
     private val roomCreateService: RoomCreateService,
     private val claimMissionService: ClaimMissionService,
     private val roomJoinService: RoomJoinService,
-    private val roomDeleteService: RoomDeleteService
+    private val roomDeleteService: RoomDeleteService,
+    private val roomLeaveService: RoomLeaveService
 ) {
     @GetMapping("/list")
     fun getRoomList(
@@ -97,6 +99,16 @@ class RoomController(
         @AuthenticationPrincipal user: CustomUserDetails?
     ): ResponseEntity<Unit> {
         roomDeleteService.deleteRoom(id, user?.memberId, request.password)
+
+        return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/leave/{id}")
+    fun leaveRoom(
+        @PathVariable id: Long,
+        @AuthenticationPrincipal user: CustomUserDetails
+    ): ResponseEntity<Unit> {
+        roomLeaveService.leaveRoom(id, user.memberId)
 
         return ResponseEntity.ok().build()
     }

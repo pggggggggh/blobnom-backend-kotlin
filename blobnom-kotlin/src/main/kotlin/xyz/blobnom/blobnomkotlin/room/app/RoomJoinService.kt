@@ -8,6 +8,7 @@ import xyz.blobnom.blobnomkotlin.common.exception.CustomException
 import xyz.blobnom.blobnomkotlin.common.exception.ErrorCode
 import xyz.blobnom.blobnomkotlin.member.domain.repository.MemberRepository
 import xyz.blobnom.blobnomkotlin.room.app.port.SolvedProblemsFetcherPort
+import xyz.blobnom.blobnomkotlin.room.domain.enums.ModeType
 import xyz.blobnom.blobnomkotlin.room.domain.repository.RoomRepository
 import java.time.ZonedDateTime
 
@@ -24,6 +25,8 @@ class RoomJoinService(
             ?: throw RuntimeException("Room not found")
         val member = memberRepository.findByIdOrNull(memberId)
             ?: throw RuntimeException("Member not found")
+        if (room.modeType != ModeType.LAND_GRAB_SOLO)
+            throw RuntimeException("Can't join room")
 
         val now = ZonedDateTime.now()
         if (room.isPrivate) {
@@ -37,7 +40,7 @@ class RoomJoinService(
 
         val platformUser = member.platformUsers.find { it.platform == room.platform }
             ?: throw CustomException(ErrorCode.UNLINKED_PLATFORM)
-        
+
 
         val solvedProblemIds = if (room.isStarted) {
             val targetProblemIds = room.missions
