@@ -17,6 +17,7 @@ class ProblemFetcherAdapter(
 ) : ProblemFetcherPort {
     override suspend fun fetch(platform: Platform, query: String, num: Int): List<ProblemInfo> =
         try {
+            // TODO: Adding a new Platform requires modifying this switch, OCP violation
             when (platform) {
                 Platform.BOJ -> bojProblemFetcher.fetch(query, num)
                 Platform.CODEFORCES -> codeforcesProblemFetcher.fetch(query, num)

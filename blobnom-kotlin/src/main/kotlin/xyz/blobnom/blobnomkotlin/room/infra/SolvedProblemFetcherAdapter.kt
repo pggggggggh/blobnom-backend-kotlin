@@ -17,6 +17,7 @@ class SolvedProblemFetcherAdapter(
         targetProblemIds: List<String>
     ): List<String> =
         when (platform) {
+            // TODO: Adding a new Platform requires modifying this switch, OCP violation
             Platform.BOJ -> bojSolvedProblemsFetcher.fetch(handle, targetProblemIds)
             Platform.CODEFORCES -> codeforcesSolvedProblemsFetcher.fetch(handle, targetProblemIds)
         }
