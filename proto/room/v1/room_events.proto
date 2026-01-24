@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package room.v1;
+
 message RoomEvent {
   int64 room_id = 1;
   oneof event {
@@ -14,8 +16,7 @@ message ProblemSolved {
   string username = 2;
 }
 
-message RoomStarted {
-}
+message RoomStarted {}
 
 message RoomReadyFailed {
   string message = 1;
