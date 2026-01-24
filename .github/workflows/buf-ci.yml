@@ -1,0 +1,45 @@
+name: Buf CI
+
+on:
+  pull_request:
+    paths:
+      - "proto/**"
+      - "buf.yaml"
+      - "buf.gen.yaml"
+      - "blobnom-kotlin/src/main/kotlin/pb/**"
+      - "blobnom-kotlin/src/main/java/pb/**"
+      - "blobnom-socket/src/pb/**"
+  push:
+    branches: [ main ]
+    paths:
+      - "proto/**"
+      - "buf.yaml"
+      - "buf.gen.yaml"
+      - "blobnom-kotlin/src/main/kotlin/pb/**"
+      - "blobnom-kotlin/src/main/java/pb/**"
+      - "blobnom-socket/src/pb/**"
+
+jobs:
+  buf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Buf
+        uses: bufbuild/buf-setup-action@v1
+
+      - name: Buf lint
+        run: buf lint
+
+      - name: Buf breaking
+        run: buf breaking --against '.git#branch=main'
+
+      - name: Buf generate
+        run: buf generate
+
+      - name: Check for uncommitted generated changes
+        run: git diff --exit-code
