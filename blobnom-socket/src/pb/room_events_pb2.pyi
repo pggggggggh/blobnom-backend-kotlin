@@ -21,7 +21,7 @@ class ProblemSolved(_message.Message):
     __slots__ = ()
     PROBLEM_ID_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
-    problem_id: str
+    problem_id: int # changed for test
     username: str
     def __init__(self, problem_id: _Optional[str] = ..., username: _Optional[str] = ...) -> None: ...
 
