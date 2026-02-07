@@ -41,6 +41,3 @@ out/
 
 ### Env ###
 .env
-
-### etc ###
-/src/test/
