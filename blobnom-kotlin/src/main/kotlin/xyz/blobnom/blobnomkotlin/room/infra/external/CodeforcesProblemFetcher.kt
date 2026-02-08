@@ -3,6 +3,7 @@ package xyz.blobnom.blobnomkotlin.room.infra.external
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
+import xyz.blobnom.blobnomkotlin.common.Platform
 import xyz.blobnom.blobnomkotlin.room.dto.ProblemInfo
 import xyz.blobnom.blobnomkotlin.room.dto.external.CodeforcesContest
 import xyz.blobnom.blobnomkotlin.room.dto.external.CodeforcesProblemSetResponse
@@ -13,8 +14,10 @@ import java.util.Locale.getDefault
 @Component
 class CodeforcesProblemFetcher(
     private val webClient: WebClient
-) {
-    suspend fun fetch(query: String, num: Int): List<ProblemInfo> { // TODO: Refactor & Asynchronous fetching
+) : ProblemFetcher {
+    override val platform: Platform = Platform.CODEFORCES
+
+    override suspend fun fetch(query: String, num: Int): List<ProblemInfo> { // TODO: Refactor & Asynchronous fetching
         var diffS: Int? = null
         var diffE: Int? = null
         var cidS: Int? = null

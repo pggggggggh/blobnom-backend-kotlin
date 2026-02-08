@@ -3,6 +3,7 @@ package xyz.blobnom.blobnomkotlin.room.infra.external
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
+import xyz.blobnom.blobnomkotlin.common.Platform
 import xyz.blobnom.blobnomkotlin.room.dto.ProblemInfo
 import xyz.blobnom.blobnomkotlin.room.dto.external.SolvedAcProblemInfo
 import xyz.blobnom.blobnomkotlin.room.dto.external.SolvedAcSearchResponse
@@ -10,8 +11,10 @@ import xyz.blobnom.blobnomkotlin.room.dto.external.SolvedAcSearchResponse
 @Component
 class BojProblemFetcher(
     val webClient: WebClient
-) {
-    suspend fun fetch(
+) : ProblemFetcher {
+    override val platform: Platform = Platform.BOJ
+
+    override suspend fun fetch(
         query: String,
         num: Int
     ): List<ProblemInfo> {
@@ -38,8 +41,8 @@ class BojProblemFetcher(
                 }
             }
         } else {
-            for (i in 0..5) {
-                if (problems.size >= num) break
+            repeat(5) {
+                if (problems.size >= num) return@repeat
 
                 try {
                     val response = webClient.get()

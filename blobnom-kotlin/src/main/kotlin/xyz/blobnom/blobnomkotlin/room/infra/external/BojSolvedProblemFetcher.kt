@@ -6,18 +6,22 @@ import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
+import xyz.blobnom.blobnomkotlin.common.Platform
 import xyz.blobnom.blobnomkotlin.room.dto.external.SolvedAcSearchResponse
 
 @Component
-class BojSolvedProblemsFetcher(
+class BojSolvedProblemFetcher(
     private val webClient: WebClient
-) {
-    suspend fun fetch(handle: String, targetProblemIds: List<String>): List<String> = coroutineScope {
+) : SolvedProblemFetcher {
+    override val platform: Platform = Platform.BOJ
+
+    override suspend fun fetchSolvedProblemIds(
+        handle: String,
+        targetProblemIds: List<String>
+    ): List<String> = coroutineScope {
         val chunks = targetProblemIds.chunked(25)
         val deferredResults = chunks.map { batch ->
-            async {
-                fetchBatch(handle, batch)
-            }
+            async { fetchBatch(handle, batch) }
         }
         deferredResults.awaitAll().flatten()
     }
@@ -31,7 +35,7 @@ class BojSolvedProblemsFetcher(
                 .retrieve()
                 .awaitBody<SolvedAcSearchResponse>()
             response.items.map { it.problemId.toString() }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }

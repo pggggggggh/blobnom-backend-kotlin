@@ -32,6 +32,7 @@ enum class ErrorCode(
     UNLINKED_PLATFORM(HttpStatus.BAD_REQUEST, "UNLINKED_PLATFORM", "계정이 해당 플랫폼(BOJ, 코드포스)과 연동되지 않아 진행할 수 없습니다."),
     CANNOT_DELETE(HttpStatus.BAD_REQUEST, "CANNOT_DELETE", "두 문제 이상 풀렸으므로 삭제할 수 없습니다."),
     CANNOT_LEAVE(HttpStatus.BAD_REQUEST, "CANNOT_LEAVE", "방장이나, 해결한 문제가 있는 회원은 방을 떠날 수 없습니다."),
+    UNSUPPORTED_PLATFORM(HttpStatus.BAD_REQUEST,"UNSUPPORTED_PLATFORM","존재하지 않는 플랫폼입니다."),
 
     // 404
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_NOT_FOUND", "존재하지 않는 회원입니다."),
