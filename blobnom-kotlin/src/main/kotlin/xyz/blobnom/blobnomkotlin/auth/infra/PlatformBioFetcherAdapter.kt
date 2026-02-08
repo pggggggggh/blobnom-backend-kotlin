@@ -2,18 +2,18 @@ package xyz.blobnom.blobnomkotlin.auth.infra
 
 import org.springframework.stereotype.Component
 import xyz.blobnom.blobnomkotlin.auth.app.port.PlatformBioFetcherPort
-import xyz.blobnom.blobnomkotlin.auth.infra.external.BojBioFetcher
-import xyz.blobnom.blobnomkotlin.auth.infra.external.CodeforcesBioFetcher
+import xyz.blobnom.blobnomkotlin.auth.infra.external.BioFetcher
 import xyz.blobnom.blobnomkotlin.common.Platform
+import xyz.blobnom.blobnomkotlin.common.exception.CustomException
+import xyz.blobnom.blobnomkotlin.common.exception.ErrorCode
 
 @Component
 class PlatformBioFetcherAdapter(
-    private val bojFetcher: BojBioFetcher,
-    private val cfFetcher: CodeforcesBioFetcher
+    fetchers: List<BioFetcher>
 ) : PlatformBioFetcherPort {
+    private val fetcherMap = fetchers.associateBy { it.platform }
+
     override suspend fun fetchBios(platform: Platform, handle: String): List<String> =
-        when (platform) {
-            Platform.BOJ -> bojFetcher.fetchBios(handle)
-            Platform.CODEFORCES -> cfFetcher.fetchBios(handle)
-        }
+        fetcherMap[platform]?.fetchBios(handle)
+            ?: throw CustomException(ErrorCode.UNSUPPORTED_PLATFORM)
 }
