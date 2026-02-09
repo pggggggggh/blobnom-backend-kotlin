@@ -36,9 +36,10 @@ class MemberModifyService(
                 platformAccountRequest.platform
             )
             if (existingPlatformAccount != null) {
-                // skip already linked accounts
-                if (existingPlatformAccount.member != member)
+                if (existingPlatformAccount.member == null) existingPlatformAccount.member = member
+                else if (existingPlatformAccount.member != member)
                     throw CustomException(ErrorCode.ALREADY_TAKEN)
+                // else : skip already linked accounts
             } else {
                 member.linkPlatform(platformAccountRequest.platform, platformAccountRequest.handle)
             }

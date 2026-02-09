@@ -36,15 +36,15 @@ class MemberRegisterService(
         val distinctCount = registerRequest.platformAccountRequests.distinctBy { it.platform }.size
         if (distinctCount != registerRequest.platformAccountRequests.size) throw CustomException(ErrorCode.DUPLICATED_PLATFORM_LINK)
 
-        for (platformUserRequest in registerRequest.platformAccountRequests) {
-            if (platformUserRepository.findByHandleAndPlatform(
-                    platformUserRequest.handle,
-                    platformUserRequest.platform
-                ) != null
+        for (platformAccountRequest in registerRequest.platformAccountRequests) {
+            val existingPlatformAccount = platformUserRepository.findByHandleAndPlatform(
+                platformAccountRequest.handle,
+                platformAccountRequest.platform
             )
+            if (existingPlatformAccount?.member != null)
                 throw CustomException(ErrorCode.ALREADY_TAKEN)
-
-            member.linkPlatform(platformUserRequest.platform, platformUserRequest.handle)
+            else if (existingPlatformAccount != null) existingPlatformAccount.member = member
+            else member.linkPlatform(platformAccountRequest.platform, platformAccountRequest.handle)
         }
 
         memberRepository.save(member)
@@ -52,12 +52,14 @@ class MemberRegisterService(
 
     @Transactional
     suspend fun validatePlatformAccount(request: PlatformAccountRequest): Boolean {
-        if (platformUserRepository.findByHandleAndPlatform(
-                request.handle,
-                request.platform
-            ) != null
+        val existingPlatformAccount = platformUserRepository.findByHandleAndPlatform(
+            request.handle,
+            request.platform
         )
-            throw CustomException(ErrorCode.ALREADY_TAKEN)
+        if (existingPlatformAccount != null) {
+            if (existingPlatformAccount.member != null)
+                throw CustomException(ErrorCode.ALREADY_TAKEN)
+        }
 
         authService.validatePlatformAccount(request.platform, request.handle)
         return true

@@ -29,7 +29,7 @@ class PlatformUser(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    val member: Member,
+    var member: Member?,
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column
