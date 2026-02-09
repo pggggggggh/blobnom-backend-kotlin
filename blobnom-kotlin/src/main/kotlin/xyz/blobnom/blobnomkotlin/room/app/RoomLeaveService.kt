@@ -17,7 +17,7 @@ class RoomLeaveService(
         val room = roomRepository.findByIdOrNull(roomId)
             ?: throw RuntimeException("Room not found")
         if (room.owner?.id == memberId) throw CustomException(ErrorCode.CANNOT_LEAVE)
-        val player = room.players.find { it.platformUser.member.id == memberId }
+        val player = room.players.find { it.platformUser.member?.id == memberId }
             ?: throw RuntimeException("Member not in room")
         if (player.adjacentSolvedCount > 0) throw CustomException(ErrorCode.CANNOT_LEAVE)
         room.players.remove(player)

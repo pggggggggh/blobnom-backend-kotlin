@@ -22,7 +22,7 @@ class ClaimMissionService(
             ?: throw RuntimeException("Room not found")
         // TODO: modify using isEnded
         if (room.endsAt.isBefore(ZonedDateTime.now())) throw CustomException(ErrorCode.ROOM_ENDED)
-        val player = room.players.find { it.platformUser.member.id == memberId }
+        val player = room.players.find { it.platformUser.member?.id == memberId }
             ?: throw RuntimeException("Player not found")
         val mission = room.missions.find { it.id == missionId }
             ?: throw RuntimeException("Mission not found")

@@ -18,7 +18,7 @@ class RoomDetailsService(
         val room = roomRepository.findWithPlayers(roomId) ?: throw RuntimeException()
         roomRepository.findWithMissions(roomId) ?: throw RuntimeException()
 
-        val player = memberId?.let { room.players.find { it.platformUser.member.id == memberId } }
+        val player = memberId?.let { room.players.find { it.platformUser.member?.id == memberId } }
         val isUserInRoom = player != null
         val yourUnsolvableMissionIds = player?.unsolvableMissionIds ?: emptyList()
 
@@ -27,7 +27,7 @@ class RoomDetailsService(
             TeamInfo(
                 memberInfos = it.sortedPlayers.map {
                     TeamMemberInfo(
-                        memberSummary = it.platformUser.member.toMemberSummary(),
+                        memberSummary = it.platformUser.member!!.toMemberSummary(),
                         indivSolvedCount = it.indivSolvedCount
                     )
                 },

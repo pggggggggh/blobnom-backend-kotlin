@@ -18,7 +18,7 @@ class RoomUpdateService(
     fun confirmSolve(roomId: Long, missionId: Long, memberId: Long) {
         val room = roomRepository.findByIdOrNull(roomId)
             ?: throw RuntimeException("Room not found")
-        val player = room.players.find { it.platformUser.member.id == memberId }
+        val player = room.players.find { it.platformUser.member?.id == memberId }
             ?: throw RuntimeException("Player not found")
         val mission = room.missions.find { it.id == missionId }
             ?: throw RuntimeException("Mission not found")
@@ -28,6 +28,6 @@ class RoomUpdateService(
             solver = player
         )
         roomScoreCalculator.calculateAndApplyScores(room)
-        roomEventPublisherPort.publishProblemSolved(roomId, mission.problemId, player.platformUser.member.handle)
+        roomEventPublisherPort.publishProblemSolved(roomId, mission.problemId, player.platformUser.member!!.handle)
     }
 }
