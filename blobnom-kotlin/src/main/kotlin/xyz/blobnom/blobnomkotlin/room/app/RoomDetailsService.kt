@@ -25,6 +25,7 @@ class RoomDetailsService(
         val teamStats = room.getTeamStats()
         val teamInfos = teamStats.map {
             TeamInfo(
+                // TODO: make it work for legacy rooms where member of platformUser can be null
                 memberInfos = it.sortedPlayers.map {
                     TeamMemberInfo(
                         memberSummary = it.platformUser.member!!.toMemberSummary(),
