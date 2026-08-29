@@ -21,7 +21,7 @@ class RoomJoinService(
 ) {
     @Transactional
     suspend fun joinRoom(roomId: Long, memberId: Long, password: String?) {
-        val room = roomRepository.findByIdOrNull(roomId)
+        val room = roomRepository.findByIdForUpdate(roomId)
             ?: throw RuntimeException("Room not found")
         val member = memberRepository.findByIdOrNull(memberId)
             ?: throw RuntimeException("Member not found")
