@@ -1,10 +1,8 @@
 package xyz.blobnom.blobnomkotlin
 
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
-class BlobnomKotlinApplicationTests {
+class BlobnomKotlinApplicationTests : AbstractIntegrationTest() {
 
     @Test
     fun contextLoads() {

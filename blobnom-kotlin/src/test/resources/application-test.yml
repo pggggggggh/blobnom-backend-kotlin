@@ -1,0 +1,15 @@
+spring:
+  mail:
+    username: test@blobnom.xyz
+    password: test-password
+  data:
+    redis:
+      url: redis://localhost:6379
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blobnom
+    username: blobnom
+    password: blobnom
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
