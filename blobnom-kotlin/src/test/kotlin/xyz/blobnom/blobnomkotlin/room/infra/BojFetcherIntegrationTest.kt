@@ -3,11 +3,10 @@ package xyz.blobnom.blobnomkotlin.room.infra
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import xyz.blobnom.blobnomkotlin.AbstractIntegrationTest
 import xyz.blobnom.blobnomkotlin.room.infra.external.BojProblemFetcher
 
-@SpringBootTest
-class BojFetcherIntegrationTest {
+class BojFetcherIntegrationTest : AbstractIntegrationTest() {
     @Autowired
     private lateinit var bojProblemFetcher: BojProblemFetcher
 
