@@ -30,25 +30,6 @@ jobs:
             options:
               ports: 8080
               dockerfile: Dockerfile
-              env:
-                - name: DB_URL
-                  value: jdbc:postgresql://postgresql:5432/p3ts9y
-                - name: DB_USERNAME
-                  value: root
-                - name: DB_PASSWORD
-                  value: ${{ secrets.DB_PASSWORD }}
-                - name: JWT_SECRET_KEY
-                  value: ${{ secrets.JWT_SECRET_KEY }}
-                - name: JWT_ALGORITHM
-                  value: HS256
-                - name: REDIS_URL
-                  value: redis://blobnom-redis:6379
-                - name: DEFAULT_PWD
-                  value: ${{ secrets.DEFAULT_PWD }}
-                - name: EMAIL_USERNAME
-                  value: blobnom.official@gmail.com
-                - name: EMAIL_PASSWORD
-                  value: ${{ secrets.EMAIL_PASSWORD }}
               args: []
             context:
               git:
