@@ -29,7 +29,7 @@ enum class ErrorCode(
         "인증에 실패했습니다. 토큰이 만료되었을 수 있으니 재발급 후 시도해주세요."
     ),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "INVALID_PASSWORD", "비밀번호가 일치하지 않습니다."),
-    UNLINKED_PLATFORM(HttpStatus.BAD_REQUEST, "UNLINKED_PLATFORM", "계정이 해당 플랫폼(BOJ, 코드포스)과 연동되지 않아 진행할 수 없습니다."),
+    UNLINKED_PLATFORM(HttpStatus.BAD_REQUEST, "UNLINKED_PLATFORM", "계정이 해당 플랫폼(BOJ, 코드포스, AtCoder)과 연동되지 않아 진행할 수 없습니다."),
     CANNOT_DELETE(HttpStatus.BAD_REQUEST, "CANNOT_DELETE", "두 문제 이상 풀렸으므로 삭제할 수 없습니다."),
     CANNOT_LEAVE(HttpStatus.BAD_REQUEST, "CANNOT_LEAVE", "방장이나, 해결한 문제가 있는 회원은 방을 떠날 수 없습니다."),
     UNSUPPORTED_PLATFORM(HttpStatus.BAD_REQUEST,"UNSUPPORTED_PLATFORM","존재하지 않는 플랫폼입니다."),

@@ -1,5 +1,5 @@
 package xyz.blobnom.blobnomkotlin.common
 
 enum class Platform {
-    BOJ, CODEFORCES
+    BOJ, CODEFORCES, ATCODER
 }
